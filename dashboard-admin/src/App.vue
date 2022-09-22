@@ -39,7 +39,7 @@
                   <button class="dropbtn">Menu 
                 </button>
                   <div class="dropdown-content3">
-                      <a href="#">profil</a>
+                      <a href="#">profile</a>
                       <a href="#">...</a>
                       <a href="#">...</a>
                   </div>
@@ -47,9 +47,9 @@
     </nav>
      
     <select class="tri">
-      <option value="" disabled selected>Select a sort</option>
-      <option value="croissant">increasing</option>
-      <option value="decroissant">decreasing</option>
+      <option value="" disabled selected>featured</option>
+      <option value="croissant">low to high</option>
+      <option value="decroissant">high to low</option>
       <option value="catégorie">categories</option>
   </select>
   
@@ -62,20 +62,20 @@
               <div v-for=" product in this.productsStore.product" :key="product.id" class="desc">
                   <h1>{{product.id}}</h1>
                   <p>....{{description}}</p>
-                  <p>Prix : {{product.price}}</p>
-                  <p>Quantité : {{product.stock}}</p>
-                  <button class="button">Ajouter au panier</button>
+                  <p>Price : {{product.price}}</p>
+                  <p>Amount : {{product.stock}}</p>
+                  <button class="button">Add to Cart</button>
               </div>
           </div>
       </div>
   
   
       <div class="pagination">
-        <button class="btnPre" @click="pagePrecedente"> &lt; précédente </button>
+        <button class="btnPre" @click="pagePrecedente"> &lt; Previous </button>
           <button class="btn" @click="page=1">1</button>
           <button class="btn" @click="page=2">2</button>
           <button class="btn" @click="page=3">3</button>
-          <button class="btnSuiv" @click="pageSuivante">suivant ></button>
+          <button class="btnSuiv" @click="pageSuivante">next ></button>
       </div>
   
     </template>
