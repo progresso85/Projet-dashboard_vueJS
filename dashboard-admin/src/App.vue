@@ -2,10 +2,16 @@
 import { mapStores, mapState } from "pinia";
 import { useClients } from "./store/clients.js";
 import { useProducts } from "./store/products.js";
+import {useOrders} from "./store/order.js"
+import axios from "axios";
+
 export default {
   data() {
     return {
       message: "Bottom Achat",
+      basket: false,
+      myProduct : [],
+      exist:false
     };
   },
   computed: {
@@ -13,10 +19,13 @@ export default {
     ...mapState(useClients, ["clients"]),
     ...mapStores(useProducts),
     ...mapState(useProducts, ["products"]),
+    ...mapStores(useOrders),
+    ...mapState(useOrders, ["orders"]),
   },
   beforeMount() {
     this.clientsStore.getClients();
     this.productsStore.getProducts();
+    this.ordersStore.getOrders();
   },
   methods: {
     afficher() {
@@ -25,8 +34,28 @@ export default {
         console.log(this.clientsStore.client[client].id);
       }
     },
-  },
-};
+    openBasket(){
+      this.basket=true;
+    },
+    addBasket(productId){
+      this.exist=false;
+      const productInOrder = this.ordersStore.order[0].products;
+      this.myProduct = productInOrder;
+  
+      for(const products in productInOrder){
+        if(productId == productInOrder[products].product_id){
+          this.exist=true;
+        }
+      }
+      if(!this.exist){
+        this.myProduct.push({productId,quantity:1})
+        axios.put("http://localhost:3000/orders",{products: this.myProduct})
+        //this.myBasket.push({productId});
+      }else console.log("ui")
+    }
+  
+  }
+}
 </script>
 
 <template>
@@ -35,9 +64,9 @@ export default {
     <div class="dropdown">
       <button class="dropbtn">Menu</button>
       <div class="dropdown-content3">
-        <a href="#">profile</a>
-        <a href="#">...</a>
-        <a href="#">...</a>
+        <button class="buttonMenu">profile</button>
+        <button @click="openBasket()" class="buttonMenu">basket</button>
+        <button class="buttonMenu">desconnect</button>
       </div>
     </div>
   </nav>
@@ -48,6 +77,20 @@ export default {
     <option value="decroissant">high to low</option>
     <option value="catégorie">categories</option>
   </select>
+
+  <div v-if="this.basket"  class="modal">
+    <div class="modal-content">
+      <div id="headerBasket">
+        <h1>Basket</h1>
+      <span @click="this.basket = !this.basket" class="close">&times;</span>
+      </div>
+      <div>
+        <div v-for="productInfo in this.ordersStore.order[0].products" :key="productInfo.id">
+          <p>{{this.ordersStore.order[0].products[0].product_id}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div
     v-for="product in this.productsStore.product"
@@ -60,11 +103,11 @@ export default {
       </div>
 
       <div class="desc">
-        <h1>{{ product.id }}</h1>
-        <p>....{{ description }}</p>
+        <h1>{{ product.name }}</h1>
+        <p>....{{ product.description }}</p>
         <p>Price : {{ product.price }}</p>
         <p>Amount : {{ product.stock }}</p>
-        <button class="button">Add to Cart</button>
+        <button @click="addBasket(product.id)" class="button">Add to Cart</button>
       </div>
     </div>
   </div>
@@ -79,6 +122,36 @@ export default {
 </template>
 
 <style>
+  #headerBasket{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .modal {
+
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+  .buttonMenu{
+    width:100%;
+    border: none;
+   
+  }
 body {
   margin: 0;
   padding: 0;
@@ -158,6 +231,7 @@ h1 {
   margin-left: 20px;
 }
 
+
 .tri {
   margin-top: 90px;
   height: 30px;
@@ -166,6 +240,7 @@ h1 {
   color: white;
   background-color: #3da9fc;
   border-radius: 5px;
+
 }
 
 .button {
@@ -225,9 +300,9 @@ footer {
   justify-content: center;
   align-items: center;
   height: 80px;
-
   z-index: 210;
-  bottom: 0px;
+  bottom: 0;
+  position: absolute;
   left: 0px;
   width: 100%;
   background-color: #094067;
