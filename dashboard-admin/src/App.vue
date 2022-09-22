@@ -2,8 +2,8 @@
 
 <script>
   import { mapStores, mapState } from 'pinia'
+  import { useClients } from './store/clients.js'
   import { useProducts } from './store/products.js'
-
     export default {
       data() {
         return {
@@ -12,11 +12,14 @@
         }
       },
       computed: {
+     ...mapStores(useClients),
+     ...mapState(useClients, ['clients']),
      ...mapStores(useProducts),
-     ...mapState(useProducts, ['product']),
+     ...mapState(useProducts, ['products']),
   },
   beforeMount(){
-    this.productsStore.test()
+    this.clientsStore.getClients();
+    this.productsStore.getProducts();
   }
     }
 
