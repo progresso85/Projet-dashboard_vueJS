@@ -5,41 +5,94 @@
             <div class="title">Register</div>
             <div class="subtitle">Let's create your account!</div>
             <div class="input-container ic1">
-                <input id="firstname" class="input" type="text" placeholder=" " />
+                <input id="firstname"  v-model="firstName" class="input" type="text" placeholder=" " />
                 <div class="cut"></div>
                 <label for="firstname" class="placeholder">First name</label>
             </div>
             <div class="input-container ic2">
-                <input id="lastname" class="input" type="text" placeholder=" " />
+                <input id="lastname" v-model="lastName" class="input" type="text" placeholder=" " />
                 <div class="cut"></div>
                 <label for="lastname" class="placeholder">Last name</label>
             </div>
             <div class="input-container ic2">
-                <input id="email" class="input" type="text" placeholder=" " />
+                <input id="email" v-model="email" class="input" type="text" placeholder=" " />
                 <div class="cut cut-short"></div>
                 <label for="email" class="placeholder">Email</label>
             </div>
-            <button type="text" class="submit">submit</button>
+            <router-link to="/about">
+            <button @click="registerClient()" type="text" class="submit">register</button>
+           </router-link>
         </div>
 
         <div class="form">
             <div class="title">Login</div>
             <div class="subtitle">Let's create your account!</div>
             <div class="input-container ic1">
-                <input id="firstname" class="input" type="text" placeholder=" " />
+                <input id="firstname" v-model="firstName" class="input" type="text" placeholder=" " />
                 <div class="cut"></div>
                 <label for="firstname" class="placeholder">First name</label>
             </div>
             <div class="input-container ic2">
-                <input id="email" class="input" type="text" placeholder=" " />
+                <input id="email" v-model="email" class="input" type="text" placeholder=" " />
                 <div class="cut cut-short"></div>
                 <label for="email" class="placeholder">Email</label>
             </div>
-            <button type="text" class="submit">Forgot Password?</button>
+            <router-link to="/about">
+            <button @click="loginClient()" type="text" class="submit">register</button>
+            </router-link>
         </div>
 
     </div>
 </template>
+
+<script>
+import axios from 'axios'
+import { useClients } from '../store/clients.js'
+import { mapStores, mapState } from 'pinia'
+    export default{
+      computed: {
+        ...mapStores(useClients),
+        ...mapState(useClients, ['client']),
+      },
+      beforeMount(){
+        this.clientsStore.getClients()
+      },
+      data(){
+        return{
+        //  currentUser: {}
+        firstName:"",
+        lastName:"",
+        email:""
+        }
+
+      },
+        methods:{
+          registerClient(){
+            let register = {
+              firstName : this.firstName,
+              lastName : this.lastName,
+              email : this.email,
+              order : [0],
+              money : 0
+            }
+            axios.post("http://localhost:3000/clients",register);
+          }, 
+          loginClient(){
+            const  firstname = this.firstName
+            const email = this.email
+           // console.log(this.client)
+            for(const client in this.clientsStore.client){
+              if(this.clientsStore.client[client].firstName == firstname && this.clientsStore.client[client].email == email){
+                this.loged=true;
+              }
+            
+            }
+          }
+        }
+
+    }
+
+</script>
 
 <style>
 
