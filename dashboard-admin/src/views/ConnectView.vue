@@ -43,11 +43,11 @@
 
 <style>
 
-body {
-  align-items: center;
+body .connect {
   display: flex;
   justify-content: center;
-  height: 100vh;
+  
+  
 }
 
 .form {
