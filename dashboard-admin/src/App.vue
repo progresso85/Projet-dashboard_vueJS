@@ -2,7 +2,7 @@
 import { mapStores, mapState } from "pinia";
 import { useClients } from "./store/clients.js";
 import { useProducts } from "./store/products.js";
-import {useOrders} from "./store/order.js"
+import { useOrders } from "./store/order.js";
 import axios from "axios";
 
 export default {
@@ -10,8 +10,8 @@ export default {
     return {
       message: "Bottom Achat",
       basket: false,
-      myProduct : [],
-      exist:false
+      myProduct: [],
+      exist: false,
     };
   },
   computed: {
@@ -34,28 +34,27 @@ export default {
         console.log(this.clientsStore.client[client].id);
       }
     },
-    openBasket(){
-      this.basket=true;
+    openBasket() {
+      this.basket = true;
     },
-    addBasket(productId){
-      this.exist=false;
+    addBasket(productId) {
+      this.exist = false;
       const productInOrder = this.ordersStore.order[0].products;
       this.myProduct = productInOrder;
-  
-      for(const products in productInOrder){
-        if(productId == productInOrder[products].product_id){
-          this.exist=true;
+
+      for (const products in productInOrder) {
+        if (productId == productInOrder[products].product_id) {
+          this.exist = true;
         }
       }
-      if(!this.exist){
-        this.myProduct.push({productId,quantity:1})
-        axios.put("http://localhost:3000/orders",{products: this.myProduct})
+      if (!this.exist) {
+        this.myProduct.push({ productId, quantity: 1 });
+        axios.put("http://localhost:3000/orders", { products: this.myProduct });
         //this.myBasket.push({productId});
-      }else console.log("ui")
-    }
-  
-  }
-}
+      } else console.log("ui");
+    },
+  },
+};
 </script>
 
 <template>
@@ -78,15 +77,18 @@ export default {
     <option value="catégorie">categories</option>
   </select>
 
-  <div v-if="this.basket"  class="modal">
+  <div v-if="this.basket" class="modal">
     <div class="modal-content">
       <div id="headerBasket">
         <h1>Basket</h1>
-      <span @click="this.basket = !this.basket" class="close">&times;</span>
+        <span @click="this.basket = !this.basket" class="close">&times;</span>
       </div>
       <div>
-        <div v-for="productInfo in this.ordersStore.order[0].products" :key="productInfo.id">
-          <p>{{this.ordersStore.order[0].products[0].product_id}}</p>
+        <div
+          v-for="productInfo in this.ordersStore.order[0].products"
+          :key="productInfo.id"
+        >
+          <p>{{ this.ordersStore.order[0].products[0].product_id }}</p>
         </div>
       </div>
     </div>
@@ -107,7 +109,9 @@ export default {
         <p>....{{ product.description }}</p>
         <p>Price : {{ product.price }}</p>
         <p>Amount : {{ product.stock }}</p>
-        <button @click="addBasket(product.id)" class="button">Add to Cart</button>
+        <button @click="addBasket(product.id)" class="button">
+          Add to Cart
+        </button>
       </div>
     </div>
   </div>
@@ -122,13 +126,12 @@ export default {
 </template>
 
 <style>
-  #headerBasket{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .modal {
-
+#headerBasket {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.modal {
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   padding-top: 100px; /* Location of the box */
@@ -137,8 +140,8 @@ export default {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 .modal-content {
   background-color: #fefefe;
@@ -147,11 +150,10 @@ export default {
   border: 1px solid #888;
   width: 80%;
 }
-  .buttonMenu{
-    width:100%;
-    border: none;
-   
-  }
+.buttonMenu {
+  width: 100%;
+  border: none;
+}
 body {
   margin: 0;
   padding: 0;
@@ -231,7 +233,6 @@ h1 {
   margin-left: 20px;
 }
 
-
 .tri {
   margin-top: 90px;
   height: 30px;
@@ -240,7 +241,6 @@ h1 {
   color: white;
   background-color: #3da9fc;
   border-radius: 5px;
-
 }
 
 .button {
@@ -301,10 +301,6 @@ footer {
   align-items: center;
   height: 80px;
   z-index: 210;
-  bottom: 0;
-  position: absolute;
-  left: 0px;
-  width: 100%;
   background-color: #094067;
   box-shadow: rgb(0 0 0 / 62%) 0 5px 20px;
 }
