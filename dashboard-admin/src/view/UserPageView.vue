@@ -1,4 +1,20 @@
+<script>
+import { useProducts } from "../store/products.js";
+import { mapStores, mapState } from "pinia";
+
+export default {
+  computed: {
+    ...mapStores(useProducts),
+    ...mapState(useProducts, ["product"]),
+  },
+  beforeMount() {
+    this.productsStore.getProducts();
+  },
+};
+</script>
+
 <template>
+  <!--Nav bar-->
   <nav class="product">
     <h1>Bottom Achat</h1>
     <div class="dropdown">
@@ -15,6 +31,7 @@
     </div>
   </nav>
 
+  <!--My announcement-->
   <div v-for="product in product" :key="product.key" class="card">
     <img src="../assets/ordinateur.png" alt="Denim Jeans" style="width: 100%" />
     <h1>{{ product.name }}</h1>
@@ -24,8 +41,10 @@
     <p><button>modif</button></p>
   </div>
 
-  <button  id="delete">Delete account</button>
+  <!--Button delete-->
+  <button id="delete">Delete account</button>
 
+  <!--Footer-->
   <div id="footerUser">
     <button class="btnPre" @click="pagePrecedente">&lt; Previous</button>
     <button class="btn" @click="page = 1">1</button>
@@ -35,22 +54,6 @@
   </div>
   <link-view></link-view>
 </template>
-
-<script>
-   import { useProducts } from "../store/products.js";
-    import { mapStores, mapState } from "pinia";
-
-    export default{
-  
-      computed: {
-      ...mapStores(useProducts),
-      ...mapState(useProducts, ["product"]),
-    },
-    beforeMount() {
-      this.productsStore.getProducts();
-    },
-    }
-</script>
 
 <style>
 body {

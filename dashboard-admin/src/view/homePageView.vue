@@ -70,6 +70,7 @@ export default {
 </script>
 
 <template>
+  <!--Nav bar-->
   <nav>
     <h1>Bottom Achat</h1>
     <div class="dropdown">
@@ -84,12 +85,15 @@ export default {
     </div>
   </nav>
 
+  <!--Featured-->
   <select class="tri">
     <option value="" disabled selected>featured</option>
     <option value="croissant">low to high</option>
     <option value="decroissant">high to low</option>
     <option value="catégorie">categories</option>
   </select>
+
+  <!--Basket-->
   <div v-if="this.basket" class="modal">
     <div class="modal-content">
       <div id="headerBasket">
@@ -110,6 +114,7 @@ export default {
       </div>
     </div>
   </div>
+  <!--Announcement-->
   <div
     v-for="product in this.productsStore.product"
     :key="product.id"
@@ -132,6 +137,7 @@ export default {
     </div>
   </div>
 
+  <!--Footer-->
   <footer id="footerHome">
     <button class="btnPre" @click="pagePrecedente">&lt; Previous</button>
     <button class="btn" @click="page = 1">1</button>

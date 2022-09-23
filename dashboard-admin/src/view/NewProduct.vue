@@ -13,11 +13,13 @@
       placeholder="Product Description"
     ></textarea>
     <label for="price">Price :</label>
-    <input v-model="price"  class="feedback-input" type="number" >
+    <input v-model="price" class="feedback-input" type="number" />
     <label for="stock">Stock :</label>
-    <input v-model="stock"  class="feedback-input" type="number" >
+    <input v-model="stock" class="feedback-input" type="number" />
 
-    <router-link @click="addNewProduct()" to="/user"><input type="submit" value="SUBMIT" /></router-link>
+    <router-link @click="addNewProduct()" to="/user"
+      ><input type="submit" value="SUBMIT"
+    /></router-link>
   </form>
 </template>
 
@@ -79,28 +81,28 @@ textarea {
 </style>
 
 <script>
-  import axios from 'axios';
-  export default {
-    name: "NewProduct",
-    data(){
-      return{
-        name:"",
-        description:"",
-        price:0,
-        stock:0
-      }
+import axios from "axios";
+export default {
+  name: "NewProduct",
+  data() {
+    return {
+      name: "",
+      description: "",
+      price: 0,
+      stock: 0,
+    };
+  },
+  methods: {
+    addNewProduct() {
+      let addP = {
+        name: this.name,
+        description: this.description,
+        price: this.price,
+        stock: this.stock,
+        idUser: 4,
+      };
+      axios.post("http://localhost:3000/products", addP);
     },
-    methods:{
-      addNewProduct(){
-        let addP = {
-          name : this.name,
-          description: this.description,
-          price: this.price,
-          stock: this.stock,
-          idUser: 4,
-        };
-        axios.post("http://localhost:3000/products", addP);
-      }
-    }
+  },
 };
 </script>

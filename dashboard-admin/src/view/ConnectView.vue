@@ -111,8 +111,8 @@ export default {
     loginClient() {
       const firstname = this.firstNameLogin;
       const email = this.emailLogin;
-      this.login=false;
-      
+      this.login = false;
+
       for (const client in this.clientsStore.client) {
         if (
           this.clientsStore.client[client].firstName == firstname &&
