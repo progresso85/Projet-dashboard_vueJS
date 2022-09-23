@@ -15,11 +15,11 @@ export default {
   },
   computed: {
     ...mapStores(useClients),
-    ...mapState(useClients, ["clients"]),
+    ...mapState(useClients, ["client"]),
     ...mapStores(useProducts),
-    ...mapState(useProducts, ["products"]),
+    ...mapState(useProducts, ["product"]),
     ...mapStores(useOrders),
-    ...mapState(useOrders, ["orders"]),
+    ...mapState(useOrders, ["order"]),
   },
   beforeMount() {
     this.clientsStore.getClients();

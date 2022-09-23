@@ -14,13 +14,16 @@
       </div>
     </div>
   </nav>
-  <footer id="footerUser">
+
+  <button id="delete">Delete account</button>
+
+  <div id="footerUser">
     <button class="btnPre" @click="pagePrecedente">&lt; Previous</button>
     <button class="btn" @click="page = 1">1</button>
     <button class="btn" @click="page = 2">2</button>
     <button class="btn" @click="page = 3">3</button>
     <button class="btnSuiv" @click="pageSuivante">next ></button>
-  </footer>
+  </div>
   <link-view></link-view>
 </template>
 
@@ -30,6 +33,18 @@ body {
   margin: 0;
   padding: 0;
 }
+
+#delete {
+  margin-left: 1%;
+  margin-top: 63%;
+  width: 10%;
+  height: 5%;
+  background-color: #3da9fc;
+  border-radius: 5px;
+  color: white;
+  border: none;
+}
+
 nav {
   display: flex;
   justify-content: space-between;
