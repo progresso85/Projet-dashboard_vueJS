@@ -8,7 +8,6 @@ import axios from "axios";
 export default {
   data() {
     return {
-      message: "Bottom Achat",
       basket: false,
       myProduct: [],
       exist: false,
@@ -59,7 +58,7 @@ export default {
 
 <template>
   <nav>
-    <h1>{{ message }}</h1>
+    <h1>Bottom Achat</h1>
     <div class="dropdown">
       <button class="dropbtn">Menu</button>
       <div class="dropdown-content3">
