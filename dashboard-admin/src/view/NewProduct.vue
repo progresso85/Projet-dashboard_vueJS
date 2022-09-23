@@ -1,17 +1,23 @@
 <template>
   <form>
     <input
+      v-model="name"
       name="text"
       class="feedback-input"
       placeholder="Product Title/Name"
     />
-    <input name="text" class="feedback-input" placeholder="Product Slug" />
     <textarea
+      v-model="description"
       name="text"
       class="feedback-input"
       placeholder="Product Description"
     ></textarea>
-    <router-link to="/user"><input type="submit" value="SUBMIT" /></router-link>
+    <label for="price">Price :</label>
+    <input v-model="price"  class="feedback-input" type="number" >
+    <label for="stock">Stock :</label>
+    <input v-model="stock"  class="feedback-input" type="number" >
+
+    <router-link @click="addNewProduct()" to="/user"><input type="submit" value="SUBMIT" /></router-link>
   </form>
 </template>
 
@@ -73,7 +79,28 @@ textarea {
 </style>
 
 <script>
-export default {
-  name: "NewProduct",
+  import axios from 'axios';
+  export default {
+    name: "NewProduct",
+    data(){
+      return{
+        name:"",
+        description:"",
+        price:0,
+        stock:0
+      }
+    },
+    methods:{
+      addNewProduct(){
+        let addP = {
+          name : this.name,
+          description: this.description,
+          price: this.price,
+          stock: this.stock,
+          idUser: 4,
+        };
+        axios.post("http://localhost:3000/products", addP);
+      }
+    }
 };
 </script>

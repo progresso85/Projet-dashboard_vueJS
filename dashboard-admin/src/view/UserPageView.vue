@@ -15,15 +15,16 @@
     </div>
   </nav>
 
-  <div class="card">
+  <div v-for="product in product" :key="product.key" class="card">
     <img src="../assets/ordinateur.png" alt="Denim Jeans" style="width: 100%" />
-    <h1>Titre</h1>
-    <p class="price">Price</p>
-    <p>Description</p>
+    <h1>{{ product.name }}</h1>
+    <p class="price">price: {{ product.price }}</p>
+    <p>description: {{ product.descriptions }}</p>
+    <p>stock: {{ product.stock }}</p>
     <p><button>modif</button></p>
   </div>
 
-  <button id="delete">Delete account</button>
+  <button  id="delete">Delete account</button>
 
   <div id="footerUser">
     <button class="btnPre" @click="pagePrecedente">&lt; Previous</button>
@@ -35,7 +36,22 @@
   <link-view></link-view>
 </template>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<script>
+   import { useProducts } from "../store/products.js";
+    import { mapStores, mapState } from "pinia";
+
+    export default{
+  
+      computed: {
+      ...mapStores(useProducts),
+      ...mapState(useProducts, ["product"]),
+    },
+    beforeMount() {
+      this.productsStore.getProducts();
+    },
+    }
+</script>
+
 <style>
 body {
   margin: 0;

@@ -47,25 +47,25 @@
       <div class="subtitle">Let's create your account!</div>
       <div class="input-container ic1">
         <input
-          id="firstname"
-          v-model="firstName"
+          id="firstnameLogin"
+          v-model="firstNameLogin"
           class="input"
           type="text"
           placeholder=" "
         />
         <div class="cut"></div>
-        <label for="firstname" class="placeholder">First name</label>
+        <label for="firstnameLogin" class="placeholder">First name</label>
       </div>
       <div class="input-container ic2">
         <input
-          id="email"
-          v-model="email"
+          id="emailLogin"
+          v-model="emailLogin"
           class="input"
           type="text"
           placeholder=" "
         />
         <div class="cut cut-short"></div>
-        <label for="email" class="placeholder">Email</label>
+        <label for="emailLogin" class="placeholder">Email</label>
       </div>
 
       <button @click="loginClient()" type="text" class="submit">login</button>
@@ -91,6 +91,9 @@ export default {
       firstName: "",
       lastName: "",
       email: "",
+      firstNameLogin: "",
+      lastNameLogin: "",
+      emailLogin: "",
     };
   },
   methods: {
@@ -106,9 +109,10 @@ export default {
       alert("client created");
     },
     loginClient() {
-      const firstname = this.firstName;
-      const email = this.email;
-      // console.log(this.client)
+      const firstname = this.firstNameLogin;
+      const email = this.emailLogin;
+      this.login=false;
+      
       for (const client in this.clientsStore.client) {
         if (
           this.clientsStore.client[client].firstName == firstname &&
