@@ -1,13 +1,31 @@
 <template>
     <nav class="product">
     <a>my product</a>|
-    <router-link class="link" to="#">add product</router-link>
+    <button @click="showAddP()">add product</button>
+     <addProduct @closeEvent="this.showAddProduct = !this.showAddProduct" v-if="showAddProduct"></addProduct> 
   </nav>
   
   
-  </template>
+</template>
 
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
+<script>
+import addProduct from '../components/addProduct.vue'
+export default {
+  components: {
+    addProduct
+  },
+  data(){
+    return{
+      showAddProduct : false
+    }
+  },
+  methods:{
+    showAddP(){
+      this.showAddProduct=true
+    }
+  }
+}
+</script>
 <style scoped>
 
     html {
