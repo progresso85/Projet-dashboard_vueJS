@@ -34,23 +34,34 @@ export default {
       }
     },
     openBasket() {
+      console.log(this.basket);
       this.basket = true;
     },
     addBasket(productId) {
       this.exist = false;
-      const productInOrder = this.ordersStore.order[0].products;
+      const productInOrder = this.order[0].products;
+      let myProduct_id = 0;
       this.myProduct = productInOrder;
 
       for (const products in productInOrder) {
+        console.log(productInOrder[products].product_id);
         if (productId == productInOrder[products].product_id) {
           this.exist = true;
+          myProduct_id = productId;
         }
       }
+
       if (!this.exist) {
-        this.myProduct.push({ productId, quantity: 1 });
-        axios.put("http://localhost:3000/orders", { products: this.myProduct });
-        //this.myBasket.push({productId});
-      } else console.log("ui");
+        this.myProduct.push({ product_id: productId, quantity: 1 });
+        axios.put(`http://localhost:3000/orders/${1}`, {
+          products: this.myProduct,
+        });
+      } else {
+        let newQuantity = (productInOrder[myProduct_id].quantity += 1);
+        axios.patch(`http://localhost:3000/orders/${1}`, {
+          products: [{ product_id: myProduct_id, quantity: newQuantity }],
+        });
+      }
     },
   },
 };
@@ -65,7 +76,7 @@ export default {
         <router-link to="/user"
           ><button class="buttonMenu">profile</button></router-link
         >
-        <button class="buttonMenu">basket</button>
+        <button @click="openBasket()" class="buttonMenu">basket</button>
         <button class="buttonMenu">desconnect</button>
       </div>
     </div>
@@ -77,7 +88,6 @@ export default {
     <option value="decroissant">high to low</option>
     <option value="catégorie">categories</option>
   </select>
-
   <div v-if="this.basket" class="modal">
     <div class="modal-content">
       <div id="headerBasket">
@@ -86,15 +96,18 @@ export default {
       </div>
       <div>
         <div
-          v-for="productInfo in this.ordersStore.order[0].products"
-          :key="productInfo.id"
+          v-for="productInfo in this.order[0].products"
+          :key="productInfo.product_id"
         >
-          <p>{{ this.ordersStore.order[0].products[0].product_id }}</p>
+          <div>
+            <p>{{ this.order[0].products[0].product_id }}</p>
+            <p>{{ this.order[0].products[0].quantity }}</p>
+          </div>
+          <button @click="deleteProduct(productInfo)">delete</button>
         </div>
       </div>
     </div>
   </div>
-
   <div
     v-for="product in this.productsStore.product"
     :key="product.id"
@@ -117,7 +130,7 @@ export default {
     </div>
   </div>
 
-  <footer>
+  <footer id="footerHome">
     <button class="btnPre" @click="pagePrecedente">&lt; Previous</button>
     <button class="btn" @click="page = 1">1</button>
     <button class="btn" @click="page = 2">2</button>
@@ -128,6 +141,36 @@ export default {
 </template>
 
 <style>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#headerBasket {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.modal {
+  position: fixed; /* Stay in place /
+  z-index: 1; / Sit on top /
+  padding-top: 100px; / Location of the box /
+  left: 0;
+  top: 0;
+  width: 100%; / Full width /
+  height: 100%; / Full height /
+  overflow: auto; / Enable scroll if needed /
+  background-color: rgb(0, 0, 0); / Fallback color /
+  background-color: rgba(0, 0, 0, 0.4); / Black w/ opacity */
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
 .buttonMenu {
   width: 100%;
   border: none;
@@ -192,26 +235,6 @@ nav {
 
 .dropdown:hover .dropdown-content3 {
   display: block;
-}
-
-.modal {
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
 }
 
 .btn {
@@ -289,7 +312,7 @@ h1 {
   border-radius: 5px;
 }
 
-footer {
+#footerHome {
   display: flex;
   justify-content: center;
   align-items: center;

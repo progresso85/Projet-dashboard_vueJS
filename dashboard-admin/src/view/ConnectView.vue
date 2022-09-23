@@ -124,7 +124,11 @@ export default {
 </script>
 
 <style>
-body .connect {
+body {
+  margin: 0;
+  padding: 0;
+}
+.connect {
   display: flex;
   justify-content: center;
 }
