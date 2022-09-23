@@ -36,11 +36,10 @@
         <div class="cut cut-short"></div>
         <label for="email" class="placeholder">Email</label>
       </div>
-      <router-link to="/about">
-        <button @click="registerClient()" type="text" class="submit">
-          register
-        </button>
-      </router-link>
+
+      <button @click="registerClient()" type="text" class="submit">
+        register
+      </button>
     </div>
 
     <div class="form">
@@ -68,9 +67,8 @@
         <div class="cut cut-short"></div>
         <label for="email" class="placeholder">Email</label>
       </div>
-      <router-link to="/Home">
-        <button @click="loginClient()" type="text" class="submit">login</button>
-      </router-link>
+
+      <button @click="loginClient()" type="text" class="submit">login</button>
     </div>
   </div>
 </template>
@@ -105,6 +103,7 @@ export default {
         money: 0,
       };
       axios.post("http://localhost:3000/clients", register);
+      alert("client created");
     },
     loginClient() {
       const firstname = this.firstName;
@@ -115,8 +114,13 @@ export default {
           this.clientsStore.client[client].firstName == firstname &&
           this.clientsStore.client[client].email == email
         ) {
-          this.loged = true;
-        }
+          this.$router.push("/Home");
+          this.currentUser = this.client[client].id;
+          this.login = true;
+        } else this.login = false;
+      }
+      if (!this.login) {
+        alert("wrong login");
       }
     },
   },
@@ -131,6 +135,7 @@ body {
 .connect {
   display: flex;
   justify-content: center;
+  margin-top: 10%;
 }
 
 .form {

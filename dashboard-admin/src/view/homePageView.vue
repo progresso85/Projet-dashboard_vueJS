@@ -47,7 +47,7 @@ export default {
         console.log(productInOrder[products].product_id);
         if (productId == productInOrder[products].product_id) {
           this.exist = true;
-          myProduct_id = productId;
+          myProduct_id = productInOrder[products];
         }
       }
 
@@ -57,9 +57,11 @@ export default {
           products: this.myProduct,
         });
       } else {
-        let newQuantity = (productInOrder[myProduct_id].quantity += 1);
+        let newQuantity = (myProduct_id.quantity += 1);
         axios.patch(`http://localhost:3000/orders/${1}`, {
-          products: [{ product_id: myProduct_id, quantity: newQuantity }],
+          products: [
+            { product_id: myProduct_id.product_id, quantity: newQuantity },
+          ],
         });
       }
     },
@@ -100,8 +102,8 @@ export default {
           :key="productInfo.product_id"
         >
           <div>
-            <p>{{ this.order[0].products[0].product_id }}</p>
-            <p>{{ this.order[0].products[0].quantity }}</p>
+            <p>id :{{ productInfo.product_id }}</p>
+            <p>quantity :{{ productInfo.quantity }}</p>
           </div>
           <button @click="deleteProduct(productInfo)">delete</button>
         </div>
@@ -120,8 +122,8 @@ export default {
 
       <div class="desc">
         <h1>{{ product.name }}</h1>
-        <p>....{{ product.description }}</p>
-        <p>Price : {{ product.price }}</p>
+        <p>{{ product.descriptions }}</p>
+        <p>Price : {{ product.price }} $</p>
         <p>Amount : {{ product.stock }}</p>
         <button @click="addBasket(product.id)" class="button">
           Add to Cart
@@ -152,16 +154,16 @@ body {
   justify-content: space-between;
 }
 .modal {
-  position: fixed; /* Stay in place /
-  z-index: 1; / Sit on top /
-  padding-top: 100px; / Location of the box /
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
   left: 0;
   top: 0;
-  width: 100%; / Full width /
-  height: 100%; / Full height /
-  overflow: auto; / Enable scroll if needed /
-  background-color: rgb(0, 0, 0); / Fallback color /
-  background-color: rgba(0, 0, 0, 0.4); / Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 .modal-content {
   background-color: #fefefe;
@@ -283,8 +285,6 @@ nav {
   font-family: "Orbitron", sans-serif;
   color: #0d1a1a;
   letter-spacing: 1px;
-  padding: 1;
-  flex-basis: 66.6%;
 }
 
 .desc h1 {

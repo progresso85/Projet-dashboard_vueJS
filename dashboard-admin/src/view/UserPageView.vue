@@ -15,6 +15,14 @@
     </div>
   </nav>
 
+  <div class="card">
+    <img src="../assets/ordinateur.png" alt="Denim Jeans" style="width: 100%" />
+    <h1>Titre</h1>
+    <p class="price">Price</p>
+    <p>Description</p>
+    <p><button>modif</button></p>
+  </div>
+
   <button id="delete">Delete account</button>
 
   <div id="footerUser">
@@ -35,14 +43,44 @@ body {
 }
 
 #delete {
+  margin-bottom: 1%;
   margin-left: 1%;
-  margin-top: 63%;
   width: 10%;
   height: 5%;
   background-color: #3da9fc;
   border-radius: 5px;
   color: white;
   border: none;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  text-align: center;
+  font-family: arial;
+  margin-top: 13%;
+  margin-left: 39%;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.card button:hover {
+  opacity: 0.7;
 }
 
 nav {
@@ -118,8 +156,6 @@ h1 {
 }
 
 #footerUser {
-  position: absolute;
-  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
