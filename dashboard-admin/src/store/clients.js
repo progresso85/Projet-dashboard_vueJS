@@ -7,6 +7,7 @@ export const useClients = defineStore("clients", {
       client: [],
     };
   },
+  /*retrieval of customer data in the API*/
   actions: {
     async getClients() {
       const { data } = await axios.get("http://localhost:3000/clients");

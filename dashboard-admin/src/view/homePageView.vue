@@ -27,14 +27,7 @@ export default {
     this.ordersStore.getOrders();
   },
   methods: {
-    afficher() {
-      console.log(this.clientsStore.client);
-      for (const client in this.clientsStore.client) {
-        console.log(this.clientsStore.client[client].id);
-      }
-    },
     openBasket() {
-      console.log(this.basket);
       this.basket = true;
     },
     addBasket(productId) {
@@ -44,13 +37,12 @@ export default {
       this.myProduct = productInOrder;
 
       for (const products in productInOrder) {
-        console.log(productInOrder[products].product_id);
         if (productId == productInOrder[products].product_id) {
           this.exist = true;
           myProduct_id = productInOrder[products];
         }
       }
-
+      /*data modification*/
       if (!this.exist) {
         this.myProduct.push({ product_id: productId, quantity: 1 });
         axios.put(`http://localhost:3000/orders/${1}`, {

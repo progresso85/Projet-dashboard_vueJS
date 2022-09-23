@@ -7,6 +7,7 @@ export const useOrders = defineStore("orders", {
       order: [],
     };
   },
+  /*retrieval of orders data in the API */
   actions: {
     async getOrders() {
       const { data } = await axios.get("http://localhost:3000/orders");

@@ -1,4 +1,65 @@
+<script>
+import axios from "axios";
+import { useClients } from "../store/clients.js";
+import { mapStores, mapState } from "pinia";
+export default {
+  computed: {
+    ...mapStores(useClients),
+    ...mapState(useClients, ["client"]),
+  },
+  beforeMount() {
+    this.clientsStore.getClients();
+  },
+  data() {
+    return {
+      //  currentUser: {}
+      firstName: "",
+      lastName: "",
+      email: "",
+      firstNameLogin: "",
+      lastNameLogin: "",
+      emailLogin: "",
+    };
+  },
+  methods: {
+    registerClient() {
+      let register = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        order: [0],
+        money: 0,
+      };
+      /*send data from register to client*/
+      axios.post("http://localhost:3000/clients", register);
+      alert("client created");
+    },
+    /*Comparison of account data with data entered in the login*/
+    loginClient() {
+      const firstname = this.firstNameLogin;
+      const email = this.emailLogin;
+      this.login = false;
+
+      for (const client in this.clientsStore.client) {
+        if (
+          this.clientsStore.client[client].firstName == firstname &&
+          this.clientsStore.client[client].email == email
+        ) {
+          this.$router.push("/Home");
+          this.currentUser = this.client[client].id;
+          this.login = true;
+        } else this.login = false;
+      }
+      if (!this.login) {
+        alert("wrong login");
+      }
+    },
+  },
+};
+</script>
+
 <template>
+  <!--From register-->
   <div class="connect">
     <div class="form">
       <div class="title">Register</div>
@@ -42,6 +103,7 @@
       </button>
     </div>
 
+    <!--From login-->
     <div class="form">
       <div class="title">Login</div>
       <div class="subtitle">Let's create your account!</div>
@@ -72,64 +134,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import axios from "axios";
-import { useClients } from "../store/clients.js";
-import { mapStores, mapState } from "pinia";
-export default {
-  computed: {
-    ...mapStores(useClients),
-    ...mapState(useClients, ["client"]),
-  },
-  beforeMount() {
-    this.clientsStore.getClients();
-  },
-  data() {
-    return {
-      //  currentUser: {}
-      firstName: "",
-      lastName: "",
-      email: "",
-      firstNameLogin: "",
-      lastNameLogin: "",
-      emailLogin: "",
-    };
-  },
-  methods: {
-    registerClient() {
-      let register = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        email: this.email,
-        order: [0],
-        money: 0,
-      };
-      axios.post("http://localhost:3000/clients", register);
-      alert("client created");
-    },
-    loginClient() {
-      const firstname = this.firstNameLogin;
-      const email = this.emailLogin;
-      this.login = false;
-
-      for (const client in this.clientsStore.client) {
-        if (
-          this.clientsStore.client[client].firstName == firstname &&
-          this.clientsStore.client[client].email == email
-        ) {
-          this.$router.push("/Home");
-          this.currentUser = this.client[client].id;
-          this.login = true;
-        } else this.login = false;
-      }
-      if (!this.login) {
-        alert("wrong login");
-      }
-    },
-  },
-};
-</script>
 
 <style>
 body {
